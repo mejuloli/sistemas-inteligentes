@@ -161,11 +161,11 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
     estilo_trabalho = ParagraphStyle(
         "titulo_trabalho",
         fontName="Helvetica-Bold",
-        fontSize=11,
-        leading=14,
+        fontSize=10.5,
+        leading=13,
         alignment=TA_CENTER,
-        spaceBefore=6,
-        spaceAfter=4,
+        spaceBefore=4,
+        spaceAfter=6,
     )
 
     estilo_titulo = ParagraphStyle(
@@ -228,16 +228,6 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
         Paragraph(
             "T01 - CLASSIFICAÇÃO DE VÍTIMAS COM CART E REDE NEURAL MLP",
             estilo_trabalho,
-        )
-    )
-
-    story.append(
-        HRFlowable(
-            width="100%",
-            thickness=0.7,
-            color=colors.black,
-            spaceBefore=2,
-            spaceAfter=5,
         )
     )
 
