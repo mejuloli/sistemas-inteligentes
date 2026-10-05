@@ -237,9 +237,7 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
     story.append(Spacer(1, 0.12 * cm))
 
     # 7
-    story.append(
-        _titulo("7) RESULTADOS DO TESTE CEGO MELHOR CART X MELHOR RN", estilo_titulo)
-    )
+    titulo7 = _titulo("7) RESULTADOS DO TESTE CEGO MELHOR CART X MELHOR RN", estilo_titulo)
     dados = [
         ["MODELO", f"Melhor CART ({melhor_cart})", f"Melhor RN ({melhor_rn})"],
         ["MEDIA PRECISAO (macro)", _fmt(teste_cart["precisao_macro"]), _fmt(teste_rn["precisao_macro"])],
@@ -247,18 +245,16 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
         ["F1 SCORE (macro)", _fmt(teste_cart["f1_macro"]), _fmt(teste_rn["f1_macro"])],
         ["ACURACIA", _fmt(teste_cart["acuracia"]), _fmt(teste_rn["acuracia"])],
     ]
-    story.append(_tabela(dados, [7.1 * cm, 4.2 * cm, 4.2 * cm], ROXO))
+    tabela7 = _tabela(dados, [7.1 * cm, 4.2 * cm, 4.2 * cm], ROXO)
+    story.append(KeepTogether([titulo7, tabela7]))
     story.append(Spacer(1, 0.18 * cm))
 
     # 8
-    story.append(
-        _titulo(
-            "8) MATRIZ DE CONFUSAO DO MELHOR CART E MATRIZ DE CONFUSAO DA MELHOR RN",
-            estilo_titulo,
-        )
+    titulo8 = _titulo(
+        "8) MATRIZ DE CONFUSAO DO MELHOR CART E MATRIZ DE CONFUSAO DA MELHOR RN",
+        estilo_titulo,
     )
-    story.append(Paragraph("G=verde, Y=amarelo, R=vermelho, B=preto", estilo_obs))
-    story.append(Spacer(1, 0.08 * cm))
+    legenda8 = Paragraph("G=verde, Y=amarelo, R=vermelho, B=preto", estilo_obs)
 
     cart_mat = _matriz_confusao_tabela("CART", teste_cart["matriz_confusao"])
     rn_mat = _matriz_confusao_tabela("RN", teste_rn["matriz_confusao"])
@@ -274,7 +270,7 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
             ]
         )
     )
-    story.append(KeepTogether(lado_a_lado))
+    story.append(KeepTogether([titulo8, legenda8, Spacer(1, 0.08 * cm), lado_a_lado]))
 
     doc.build(story)
 

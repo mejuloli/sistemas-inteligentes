@@ -82,7 +82,7 @@ relatorio/relatorio_final.pdf
 
 A validação usa `StratifiedKFold` com 5 folds e `random_state=42`. O F1 usado para comparação é `f1_macro`. Para cada hiperparametrização são guardados os F1 de treino e validação por fold, média, desvio padrão e diferença absoluta entre treino e validação.
 
-O melhor CART e a melhor RN são escolhidos pela maior média de F1 macro de validação; em empate, vence o modelo com menor diferença média treino-validação.
+O melhor CART e a melhor RN são escolhidos por um critério explícito que usa as duas informações pedidas no enunciado: `F1 validação - gap absoluto médio entre treino e validação`. Isso evita escolher automaticamente um modelo muito sobreajustado só porque ganhou alguns pontos de F1 de validação.
 
 A MLP é treinada dentro de um `Pipeline(StandardScaler + MLPClassifier)`, para que a normalização seja aprendida apenas com a parte de treino de cada fold e não provoque vazamento.
 
