@@ -189,6 +189,7 @@ t01-classificacao-vitimas/
 │   ├── baixar_recursos_oficiais.py
 │   ├── executar_tudo.py
 │   ├── gerar_relatorio.py
+│   ├── gerar_treino.py
 │   └── validar_dataset.py
 │
 ├── src/
