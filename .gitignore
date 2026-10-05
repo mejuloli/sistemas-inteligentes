@@ -41,3 +41,4 @@ __pycache__/
 
 # Pasta de entrega gerada localmente
 entrega/
+datasets/
