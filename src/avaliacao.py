@@ -71,12 +71,17 @@ def escolher_melhor(resultados: dict[str, dict[str, Any]]) -> str:
     if not resultados:
         raise ValueError("Nenhum resultado recebido para seleção do melhor modelo.")
 
-    # 1) maior F1 macro médio de validação; 2) menor gap treino-validação.
-    return min(
+    # O enunciado pede comparar desempenho e viés para subsidiar a escolha.
+    # Usamos um critério simples e explícito de generalização:
+    #     score = F1_validacao - |F1_treino - F1_validacao|
+    # Assim, um ganho pequeno de validação não compensa um gap muito alto.
+    return max(
         resultados,
         key=lambda nome: (
-            -resultados[nome]["validacao"]["media"],
-            resultados[nome]["diferencas_abs"]["media"],
+            resultados[nome]["validacao"]["media"]
+            - resultados[nome]["diferencas_abs"]["media"],
+            resultados[nome]["validacao"]["media"],
+            -resultados[nome]["diferencas_abs"]["media"],
         ),
     )
 

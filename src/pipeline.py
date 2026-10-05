@@ -7,6 +7,8 @@ from typing import Any
 import joblib
 import pandas as pd
 import sklearn
+import warnings
+from sklearn.exceptions import ConvergenceWarning
 
 from .avaliacao import avaliar_teste_cego, avaliar_validacao_cruzada, escolher_melhor
 from .dados import carregar_dataset, extrair_xy, resumo_dataset
@@ -102,6 +104,12 @@ def executar(
         )
 
     x_treino, y_treino = extrair_xy(df_treino)
+    contagens = y_treino.value_counts()
+    if len(contagens) < 4 or int(contagens.min()) < folds:
+        raise ValueError(
+            "Cada classe de tri deve possuir amostras suficientes para todos os folds. "
+            f"Contagens: {contagens.sort_index().to_dict()}, folds={folds}."
+        )
 
     resultados_cart = _avaliar_familia(
         "cart", config["cart"], x_treino, y_treino, folds, random_state
@@ -119,7 +127,9 @@ def executar(
     modelo_cart = criar_cart(config["cart"][melhor_cart], random_state)
     modelo_rn = criar_rn(config["rn"][melhor_rn], random_state)
     modelo_cart.fit(x_treino, y_treino)
-    modelo_rn.fit(x_treino, y_treino)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=ConvergenceWarning)
+        modelo_rn.fit(x_treino, y_treino)
 
     (ROOT / "models").mkdir(exist_ok=True)
     joblib.dump(modelo_cart, ROOT / "models" / "melhor_cart.joblib")
@@ -127,6 +137,11 @@ def executar(
 
     # Só agora o teste cego é lido.
     df_teste = carregar_dataset(teste_cego_csv)
+    if len(df_teste) != 1300:
+        raise ValueError(
+            f"O teste cego indicado no enunciado possui 1300 vítimas; "
+            f"o arquivo recebido possui {len(df_teste)}."
+        )
     x_teste, y_teste = extrair_xy(df_teste)
     teste_cart = avaliar_teste_cego(modelo_cart, x_teste, y_teste)
     teste_rn = avaliar_teste_cego(modelo_rn, x_teste, y_teste)
@@ -142,6 +157,7 @@ def executar(
         "melhores": {
             "cart": melhor_cart,
             "rn": melhor_rn,
+            "criterio": "maximizar validacao_f1_media - gap_medio_treino_validacao",
         },
         "teste_cego": {
             "cart": teste_cart,
