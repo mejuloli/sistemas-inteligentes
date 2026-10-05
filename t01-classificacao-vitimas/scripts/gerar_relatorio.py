@@ -12,7 +12,6 @@ from reportlab.lib.units import cm
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
-    HRFlowable,
     KeepTogether,
     PageTemplate,
     Paragraph,
@@ -165,7 +164,7 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
         leading=13,
         alignment=TA_CENTER,
         spaceBefore=4,
-        spaceAfter=6,
+        spaceAfter=12,
     )
 
     estilo_titulo = ParagraphStyle(
