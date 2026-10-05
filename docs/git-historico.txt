@@ -1,0 +1,21 @@
+HISTORICO GIT DO PROJETO
+
+*   48eef5d (HEAD -> main) merge: integra validacoes e testes
+|\  
+| * 1e49c06 (test/validacao) test: valida features, selecao e layout do relatorio
+|/  
+*   ff82d71 merge: integra geracao do relatorio
+|\  
+| * 54610b3 (feat/relatorio) feat: gera relatorio PDF no formato do enunciado
+|/  
+*   e1c247d merge: integra pipeline de modelagem
+|\  
+| * 143a42c (feat/modelagem) feat: implementa validacao cruzada CART e MLP
+|/  
+* f16203e chore: inicia repositorio e estrutura do trabalho
+
+BRANCHES
+  feat/modelagem
+  feat/relatorio
+* main
+  test/validacao
