@@ -9,18 +9,15 @@ venv/
 .vscode/
 .idea/
 .DS_Store
-
 # Dados gerados / baixados
 data/raw/*.csv
 data/processed/*.csv
 external/gerar_dados_vitimas.py
-
 # Artefatos gerados
 models/*.joblib
 results/*.json
 results/*.csv
 relatorio/*.pdf
-
 # Mantém as pastas no Git
 !data/raw/.gitkeep
 !data/processed/.gitkeep
@@ -28,17 +25,10 @@ relatorio/*.pdf
 !models/.gitkeep
 !results/.gitkeep
 !relatorio/.gitkeep
-
 # Metadados do Windows
 *:Zone.Identifier
-
 # Cache Python
-__pycache__/
-*.py[cod]
-
 # Ambiente virtual
-.venv/
-
 # Pasta de entrega gerada localmente
 entrega/
 datasets/
