@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# IDE/SO
+.vscode/
+.idea/
+.DS_Store
+
+# Dados gerados / baixados
+data/raw/*.csv
+data/processed/*.csv
+external/gerar_dados_vitimas.py
+
+# Artefatos gerados
+models/*.joblib
+results/*.json
+results/*.csv
+relatorio/*.pdf
+
+# Mantém as pastas no Git
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!external/.gitkeep
+!models/.gitkeep
+!results/.gitkeep
+!relatorio/.gitkeep

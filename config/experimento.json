@@ -1,0 +1,54 @@
+{
+  "random_state": 42,
+  "cv_folds": 5,
+  "dataset": {
+    "n_vitimas": 10000,
+    "idade_parametro": 45,
+    "desvio_padrao_parametro": 18,
+    "ruido": 0.03,
+    "tipo_acidente": "REGISTRAR_CONFORME_GERADOR_OFICIAL"
+  },
+  "cart": {
+    "U": {
+      "max_depth": 2,
+      "min_samples_leaf": 100,
+      "criterion": "gini"
+    },
+    "E": {
+      "max_depth": 8,
+      "min_samples_leaf": 8,
+      "criterion": "entropy"
+    },
+    "O": {
+      "max_depth": null,
+      "min_samples_leaf": 1,
+      "criterion": "gini"
+    }
+  },
+  "rn": {
+    "U": {
+      "hidden_layer_sizes": [8],
+      "activation": "tanh",
+      "learning_rate_init": 0.01,
+      "solver": "adam",
+      "alpha": 0.01,
+      "max_iter": 300
+    },
+    "E": {
+      "hidden_layer_sizes": [64, 32],
+      "activation": "relu",
+      "learning_rate_init": 0.001,
+      "solver": "adam",
+      "alpha": 0.0001,
+      "max_iter": 500
+    },
+    "O": {
+      "hidden_layer_sizes": [128, 128, 64],
+      "activation": "relu",
+      "learning_rate_init": 0.001,
+      "solver": "adam",
+      "alpha": 0.000001,
+      "max_iter": 700
+    }
+  }
+}
