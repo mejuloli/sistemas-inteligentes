@@ -1,5 +1,107 @@
 # T01 — Classificação de Vítimas com CART e Rede Neural MLP
 
+
+## Execução completa do zero
+
+Para reproduzir todo o trabalho a partir de um clone novo do repositório, execute os passos abaixo na ordem apresentada.
+
+### 1. Entrar na pasta do projeto
+
+~~~bash
+cd t01-classificacao-vitimas
+~~~
+
+### 2. Criar o ambiente virtual
+
+~~~bash
+python -m venv .venv
+~~~
+
+### 3. Ativar o ambiente virtual
+
+No Linux:
+
+~~~bash
+source .venv/bin/activate
+~~~
+
+### 4. Instalar as dependências
+
+~~~bash
+pip install -r requirements.txt
+~~~
+
+### 5. Baixar os recursos oficiais
+
+~~~bash
+python scripts/baixar_recursos_oficiais.py
+~~~
+
+Esse comando obtém:
+
+~~~text
+external/gerar_dados_vitimas.py
+data/raw/teste_ceg1300.csv
+~~~
+
+### 6. Gerar o dataset de treinamento
+
+~~~bash
+python scripts/gerar_treino.py
+~~~
+
+Esse comando gera, de forma reproduzível:
+
+~~~text
+data/raw/treino_10000.csv
+~~~
+
+São utilizadas 10.000 vítimas, ruído 0.05 e semente fixa 42.
+
+### 7. Validar o dataset
+
+~~~bash
+python scripts/validar_dataset.py data/raw/treino_10000.csv
+~~~
+
+### 8. Executar os testes automatizados
+
+~~~bash
+python -m unittest discover -s tests -v
+~~~
+
+### 9. Executar o experimento completo
+
+~~~bash
+python scripts/executar_tudo.py \
+  --treino data/raw/treino_10000.csv \
+  --teste-cego data/raw/teste_ceg1300.csv
+~~~
+
+O pipeline realiza automaticamente:
+
+1. validação cruzada dos modelos CART;
+2. validação cruzada das redes neurais;
+3. seleção das melhores hiperparametrizações;
+4. retreino utilizando as 10.000 vítimas;
+5. avaliação no teste cego de 1.300 vítimas;
+6. salvamento dos modelos;
+7. geração dos resultados;
+8. geração do relatório final.
+
+Ao final devem existir:
+
+~~~text
+models/melhor_cart.joblib
+models/melhor_rn.joblib
+results/resultado_experimento.json
+results/resultados_cv.csv
+relatorio/relatorio_final.pdf
+~~~
+
+---
+
+
 Trabalho desenvolvido para a disciplina **Sistemas Inteligentes 1**, da UTFPR — Campus Curitiba, no semestre 2026/2.
 
 O objetivo é construir e comparar modelos de classificação capazes de determinar a classificação START (`tri`) de vítimas de catástrofes naturais, desastres ou grandes acidentes.
