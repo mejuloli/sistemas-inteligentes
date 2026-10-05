@@ -12,6 +12,7 @@ from reportlab.lib.units import cm
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
+    HRFlowable,
     KeepTogether,
     PageTemplate,
     Paragraph,
@@ -43,13 +44,22 @@ def _topologia(params: dict[str, Any]) -> str:
 
 
 def _cabecalho(canvas, doc) -> None:
+    """Cabecalho discreto para as paginas posteriores a primeira."""
     canvas.saveState()
-    canvas.setFont("Helvetica", 8.5)
-    canvas.drawString(
-        1.6 * cm,
-        A4[1] - 1.05 * cm,
-        "UTFPR/Curitiba - SISTEMAS INTELIGENTES 1 - 2026/2 - Prof. Tacla",
-    )
+
+    if doc.page > 1:
+        canvas.setFont("Helvetica", 8)
+        canvas.drawString(
+            1.6 * cm,
+            A4[1] - 1.05 * cm,
+            "UTFPR - Sistemas Inteligentes - ICSI30 - T01",
+        )
+        canvas.drawRightString(
+            A4[0] - 1.6 * cm,
+            A4[1] - 1.05 * cm,
+            f"Pagina {doc.page}",
+        )
+
     canvas.restoreState()
 
 
@@ -122,13 +132,41 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
         pagesize=A4,
         rightMargin=1.6 * cm,
         leftMargin=1.6 * cm,
-        topMargin=1.55 * cm,
+        topMargin=1.75 * cm,
         bottomMargin=1.35 * cm,
-        title="Relatorio T01 - Classificacao",
-        author="",
+        title="T01 - Classificacao de Vitimas com CART e Rede Neural MLP",
+        author="Julia Kamilly de Oliveira",
     )
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id="normal")
     doc.addPageTemplates([PageTemplate(id="padrao", frames=frame, onPage=_cabecalho)])
+
+    estilo_universidade = ParagraphStyle(
+        "universidade",
+        fontName="Helvetica-Bold",
+        fontSize=10.5,
+        leading=13,
+        alignment=TA_CENTER,
+        spaceAfter=6,
+    )
+
+    estilo_dados = ParagraphStyle(
+        "dados_academicos",
+        fontName="Helvetica",
+        fontSize=8.3,
+        leading=11,
+        alignment=TA_CENTER,
+        spaceAfter=2,
+    )
+
+    estilo_trabalho = ParagraphStyle(
+        "titulo_trabalho",
+        fontName="Helvetica-Bold",
+        fontSize=11,
+        leading=14,
+        alignment=TA_CENTER,
+        spaceBefore=6,
+        spaceAfter=4,
+    )
 
     estilo_titulo = ParagraphStyle(
         "secao",
@@ -157,6 +195,51 @@ def gerar(resultado: dict[str, Any], saida: Path) -> None:
     teste_rn = resultado["teste_cego"]["rn"]
 
     story = []
+
+    # Cabecalho institucional da primeira pagina
+    story.append(
+        Paragraph(
+            "UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ - UTFPR",
+            estilo_universidade,
+        )
+    )
+
+    story.append(
+        Paragraph(
+            "<b>ALUNA:</b> JULIA KAMILLY DE OLIVEIRA"
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            "<b>RA:</b> 2588005"
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            "<b>CURSO:</b> SISTEMAS DE INFORMAÇÃO - S73",
+            estilo_dados,
+        )
+    )
+
+    story.append(
+        Paragraph(
+            "<b>DISCIPLINA:</b> SISTEMAS INTELIGENTES - ICSI30"
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            "<b>PROF:</b> CESAR AUGUSTO TACLA",
+            estilo_dados,
+        )
+    )
+
+    story.append(
+        Paragraph(
+            "T01 - CLASSIFICAÇÃO DE VÍTIMAS COM CART E REDE NEURAL MLP",
+            estilo_trabalho,
+        )
+    )
+
+    story.append(
+        HRFlowable(
+            width="100%",
+            thickness=0.7,
+            color=colors.black,
+            spaceBefore=2,
+            spaceAfter=5,
+        )
+    )
 
     # 1
     story.append(_titulo("1) DATASET DE TREINAMENTO/VALIDACAO", estilo_titulo))
