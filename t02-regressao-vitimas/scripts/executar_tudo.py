@@ -11,6 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.pipeline import executar
+from scripts.gerar_relatorio import gerar
 
 
 def main() -> None:
@@ -44,6 +45,11 @@ def main() -> None:
         config_path=args.config,
     )
 
+    gerar(
+        resultado,
+        ROOT / "relatorio" / "relatorio_final.pdf",
+    )
+
     print()
     print("Concluído.")
     print(f"- Melhor CART: {resultado['melhores']['cart']}")
@@ -55,6 +61,7 @@ def main() -> None:
     print("- results/resultados_cv.csv")
     print("- plots/dispersao_cart.png")
     print("- plots/dispersao_rn.png")
+    print("- relatorio/relatorio_final.pdf")
 
 
 if __name__ == "__main__":
