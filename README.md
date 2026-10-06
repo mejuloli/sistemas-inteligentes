@@ -23,4 +23,25 @@ O README dentro do diretório do projeto contém as instruções completas para 
 
 ---
 
-Novos trabalhos da disciplina serão adicionados em diretórios separados.
+### T02 — Regressão da Probabilidade de Sobrevivência
+
+Implementação e comparação de modelos de regressão para estimar a probabilidade de sobrevivência de vítimas.
+
+Modelos utilizados:
+
+- Árvore de Decisão CART;
+- Rede Neural Artificial MLP.
+
+O trabalho utiliza validação cruzada, três hiperparametrizações para cada modelo — subajustada, equilibrada e sobreajustada —, retreino dos melhores modelos e avaliação em um conjunto de teste cego.
+
+A avaliação utiliza métricas de **MSE** e **RMSE**, além de gráficos de dispersão entre os valores reais e preditos.
+
+Diretório:
+
+`t02-regressao-vitimas/`
+
+O README dentro do diretório do projeto contém as instruções completas para instalação, geração dos dados, execução dos modelos e reprodução dos resultados.
+
+---
+
+Os próximos trabalhos da disciplina serão adicionados em diretórios separados.
