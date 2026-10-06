@@ -1,10 +1,10 @@
 # Sistemas Inteligentes
 
-Repositório destinado aos trabalhos desenvolvidos na disciplina **Sistemas Inteligentes 1**, da UTFPR — Campus Curitiba, durante o semestre 2026/2.
+Repositório destinado aos trabalhos desenvolvidos na disciplina **Sistemas Inteligentes**, da UTFPR - Campus Curitiba, durante o semestre 2026/2.
 
 ## Trabalhos
 
-### T01 — Classificação de Vítimas
+### T01 - Classificação de Vítimas
 
 Implementação e comparação de modelos para classificação de vítimas segundo o protocolo START.
 
@@ -23,7 +23,7 @@ O README dentro do diretório do projeto contém as instruções completas para 
 
 ---
 
-### T02 — Regressão da Probabilidade de Sobrevivência
+### T02 - Regressão da Probabilidade de Sobrevivência
 
 Implementação e comparação de modelos de regressão para estimar a probabilidade de sobrevivência de vítimas.
 
