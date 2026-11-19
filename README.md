@@ -50,8 +50,5 @@ Experimento de clustering com 410 vítimas em uma grade 75 × 75 do VictSim3. A 
 
 A estratégia de socorro reutiliza os modelos da T01 e da T02 para estimar a triagem START e a sobrevivência. O agrupamento final combina coordenadas normalizadas e probabilidade de sobrevivência, com K=6, SSE de 14,7754 e silhueta de 0,3756. As 410 vítimas foram agrupadas. O relatório descreve como distribuir os lotes entre cinco socorristas com restrições de idade.
 
-- [Projeto e instruções de reprodução](tarefa3/README.md)
-- [Relatório final](tarefa3/entrega_moodle/relatorio_t3.pdf)
-- [Arquivos para o Moodle](tarefa3/entrega_moodle/)
-- [Auditoria do enunciado](tarefa3/AUDITORIA.md)
-- [ZIP do projeto completo](tarefa3_projeto_completo.zip)
+- [Projeto e instruções de reprodução](t03-agrupamento-vitimas/README.md)
+- [Auditoria do enunciado](t03-agrupamento-vitimas/AUDITORIA.md)

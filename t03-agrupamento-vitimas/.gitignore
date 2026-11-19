@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+# Entradas fornecidas para a atividade
+/map.csv
+/modelos/
+
+# Resultados gerados e pacote de submissão
+/outputs/
+/entrega_moodle/
+/relatorio/relatorio_t3.*
