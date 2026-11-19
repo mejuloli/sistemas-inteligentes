@@ -46,9 +46,19 @@ O README dentro do diretório do projeto contém as instruções completas para 
 
 ### T03 - Agrupamento de Vítimas
 
-Experimento de clustering com 410 vítimas em uma grade 75 × 75 do VictSim3. A primeira parte avalia K-means com coordenadas espaciais para K de 2 a 12 e identifica o cotovelo em K=4.
+Implementação e avaliação de estratégias de agrupamento de vítimas para apoiar a organização do socorro no VictSim3.
 
-A estratégia de socorro reutiliza os modelos da T01 e da T02 para estimar a triagem START e a sobrevivência. O agrupamento final combina coordenadas normalizadas e probabilidade de sobrevivência, com K=6, SSE de 14,7754 e silhueta de 0,3756. As 410 vítimas foram agrupadas. O relatório descreve como distribuir os lotes entre cinco socorristas com restrições de idade.
+Algoritmos utilizados:
 
-- [Projeto e instruções de reprodução](t03-agrupamento-vitimas/README.md)
-- [Auditoria do enunciado](t03-agrupamento-vitimas/AUDITORIA.md)
+- K-means para os experimentos de agrupamento;
+- DBSCAN para a análise exploratória da densidade.
+
+O trabalho avalia o agrupamento por posição espacial e compara três parametrizações de K-means que combinam posição e probabilidade de sobrevivência estimada pelo modelo da T02. A triagem START estimada pelo modelo da T01 apoia a proposta de priorização do socorro.
+
+A avaliação utiliza **SSE** e **coeficiente de silhueta**, além do método do cotovelo no experimento espacial e da visualização dos grupos no mapa.
+
+Diretório:
+
+`t03-agrupamento-vitimas/`
+
+O README dentro do diretório do projeto contém as instruções completas para instalação, preparação dos dados e modelos, execução dos experimentos e reprodução dos resultados.
