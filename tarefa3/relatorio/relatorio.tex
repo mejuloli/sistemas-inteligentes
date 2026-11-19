@@ -1,0 +1,170 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=19mm]{geometry}
+\usepackage{graphicx,booktabs,xcolor,amsmath,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.13}
+\newcommand{\titulo}[1]{\textbf{\textcolor{blue!45!black}{#1}}\par}
+\begin{document}
+\fontsize{11}{14}\selectfont
+
+\titulo{UTFPR · CSI30 · Sistemas Inteligentes · 2026/2}
+\textbf{Tarefa 3 — Agrupamento de vítimas no VictSim3}\\
+Julia Kamilly de Oliveira · RA 2588005 · Prof. Cesar Augusto Tacla
+
+\titulo{1. Experimento básico com posição espacial}
+
+O mapa explorado tem 5.625 células e 410 vítimas com ID único. A grade é
+$75\times75$, com base absoluta $(30,40)$, 555 paredes e terreno de dificuldade variável.
+A análise usa as coordenadas relativas à base e somente as células com ID não negativo.
+Para cada $K$, aplicou-se K-means euclidiano com inicialização k-means++, 50 reinícios e semente 42.
+
+\textbf{Tabela 1.} Variação de $K$ com somente $x_{rel}$ e $y_{rel}$.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$K$ & SSE (células$^2$) & Silhueta média \\
+\midrule
+\input{../outputs/basico_linhas.tex}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\includegraphics[width=.495\linewidth]{../outputs/graficos/sse.pdf}
+\includegraphics[width=.495\linewidth]{../outputs/graficos/silhueta.pdf}\\
+\textbf{Figura 1.} SSE por $K$.\hfill\textbf{Figura 2.} Silhueta por $K$.
+\end{center}
+
+O enunciado menciona uma raiz quadrada e nomeia a métrica da tabela como SSE. Foi usada
+a inércia do K-means, como no \href{https://github.com/tacla/Sistemas-Inteligentes/blob/187c1f0ca691d40a880616ef0517bf8134585687/Clustering/K_MEANS_An\%C3\%A1lises.ipynb}{exemplo de Tacla}, $\mathrm{SSE}=\sum_i\lVert x_i-\mu_{c_i}\rVert_2^2$.
+A média quadrática por ponto é $\mathrm{SSE}/N$ e o RMSE correspondente é
+$\sqrt{\mathrm{SSE}/N}$. A silhueta global é a média das silhuetas individuais com distância
+euclidiana.
+
+O cotovelo está em $K=4$, maior distância perpendicular à corda que liga $K=2$ e $K=12$
+com os dois eixos escalados em $[0,1]$ apenas para localizar o ponto. O ganho de SSE
+cai de 51.011,24 ($3\to4$) para 17.326,75 ($4\to5$). A silhueta atinge o máximo
+em $K=5$ (0,4815), próxima da observada em $K=4$ (0,4753).
+
+\clearpage
+\titulo{2. Estratégia de agrupamento para o socorro}
+
+\textbf{Predições.}
+O mapa de entrada contém \texttt{tri} e \texttt{sobr} iguais a $-1$ nas 5.625 células.
+Nas 410 vítimas, aplicou-se a rede da T1 com seu scaler interno e a rede da T2
+com seu scaler externo. A ordem foi idade, fc, fr, pas, spo2, temp, pr, sg, fx e queim.
+As escolhas seguiram os testes cegos anteriores (F1 macro 0,93020 e RMSE 0,04913).
+Foram previstos 100 verdes, 106 amarelos, 108 vermelhos e 96 pretos.
+A sobrevivência variou de 0,1656 a 0,9582, sem ajustes aos limites.
+
+\textbf{Representação.}
+As coordenadas absolutas divididas por 74 preservam a escala comum dos eixos.
+A sobrevivência prevista $p$ já está em $[0,1]$ e entra como $0{,}45p$.
+Uma diferença de 0,1 em $p$ equivale a 3,33 células no cálculo da distância.
+A posição favorece lotes próximos e a sobrevivência diferencia perfis dentro do território.
+A triagem tem ordem de prioridade e a classe preta requer tratamento próprio. Seus códigos
+carecem de intervalos clínicos iguais. As medianas de $p$ por classe
+são 0,938, 0,784, 0,502 e 0,251, da verde à preta. A triagem orienta a fila futura.
+A idade entra como restrição de elegibilidade na atribuição.
+
+\begin{center}
+\includegraphics[height=73mm]{../outputs/graficos/nuvem.pdf}\\
+\textbf{Figura 3.} Nuvem no espaço efetivo do agrupamento.
+\end{center}
+
+\textbf{Geometria.}
+A nuvem contém vazios e regiões adensadas, com sobrevivências variadas
+nas mesmas regiões. As correlações de Spearman de $p$ com $x$ e $y$ são $-0{,}057$ e
+$0{,}074$. A distância ao quinto vizinho (incluindo o próprio ponto) tem mediana 0,086
+e máximo 0,220, sinal de pontos mais isolados. A projeção sugere uma distribuição irregular,
+sem evidência de grupos naturais isolados com contornos não convexos. Os centroides
+fornecem setores de trabalho aproximados e podem cruzar paredes.
+
+\textbf{Algoritmo.}
+O DBSCAN permite contornos não convexos. Com cinco amostras mínimas e
+$\varepsilon$ nos quartis da distância do quinto vizinho, produziu 16, 14 e 10 grupos
+e 236, 116 e 45 casos de ruído, respectivamente. As coberturas foram 42,4\%, 71,7\%
+e 89,0\%. Adotou-se K-means por sua partição de cobertura total e por permitir controlar
+o número de lotes de trabalho. Nenhuma vítima foi excluída.
+
+\clearpage
+\titulo{3. Parametrizações e coordenação proposta}
+
+\textbf{Tabela 2.} K-means no espaço da estratégia. O raio RMS mede a dispersão espacial
+em células relativa ao centroide espacial de cada grupo.
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+PAR & $K$ & SSE & Silhueta & Vítimas/lote & Raio RMS \\
+\midrule
+\input{../outputs/estrategia_linhas.tex}
+\end{tabular}
+\end{center}
+
+A configuração escolhida fixa $K=6$. Em relação a $K=4$, reduz o raio RMS em cerca de 20\%,
+com perda de 0,0248 na silhueta. Oito lotes equilibram melhor as contagens, mas o ganho
+adicional de 0,98 célula no raio vem com perda de 0,0637 na silhueta em relação a seis.
+Com $K=6$, os pesos 0,25 e 0,70 tiveram índices Rand ajustados de 0,938 e 0,533 em relação
+a 0,45. A redução de peso mantém uma partição semelhante. O aumento reorganiza
+consideravelmente os setores. SSEs de espaços ponderados de formas diferentes têm escalas distintas.
+
+\textbf{Tabela 3.} Composição dos seis lotes e localização em relação à base.
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+Lote & Total & Idade $\leq12$ & Centro $x_{rel}$ & Centro $y_{rel}$ & Dist. média \\
+\midrule
+\input{../outputs/grupos_linhas.tex}
+\end{tabular}
+\end{center}
+
+\textbf{Atribuição futura.}
+Os agentes 1 e 2 atendem qualquer idade e terão capacidade reservada para as 106
+vítimas de até 12 anos. Agentes 3, 4 e 5 recebem somente vítimas com idade $>12$.
+Em lotes mistos, dividir a fila em listas elegíveis por vítima. Por exemplo, no lote 1,
+30 das 115 vítimas exigem agentes 1 ou 2 e as 85 restantes podem ser distribuídas
+entre os cinco. O sexto lote dá margem para colocar trabalho em fila. Priorizar trabalho
+por START (vermelho, amarelo, verde), revisar casos pretos separadamente.
+Dentro de cada classe, ordenar pelo custo de deslocamento e antecipar a menor
+sobrevivência estimada quando os custos forem semelhantes.
+As previsões são estimativas. O custo de rota considera posições, relevo e paredes.
+
+\textbf{Coordenação futura.}
+Usar um coordenador com fila de IDs únicos. Trabalhar em paralelo em setores diferentes
+ou em subconjuntos disjuntos de um lote grande. Reservar cada ID para um agente de
+cada vez até conclusão ou liberação e redistribuir pendências conforme carga restante,
+tempo estimado de atendimento e custo desde a posição atual ou a base.
+A distância média da tabela é euclidiana e serve de referência inicial.
+A execução desta tarefa termina na exportação dos agrupamentos.
+
+\clearpage
+\titulo{4. Agrupamentos no grid}
+
+\begin{center}
+\includegraphics[width=.98\linewidth]{../outputs/graficos/grid.png}
+
+\textbf{Figura 4.} Saída do visualizador oficial VictSim3, com sequenciamento desligado.
+\end{center}
+
+\textbf{Contornos por cluster.}
+\textcolor[RGB]{180,0,180}{1 magenta},
+\textcolor[RGB]{0,134,143}{2 ciano},
+\textcolor[RGB]{185,85,0}{3 laranja},
+\textcolor[RGB]{128,0,255}{4 roxo},
+\textcolor[RGB]{0,130,70}{5 verde-menta},
+\textcolor[RGB]{195,0,95}{6 rosa}.
+
+\textbf{Círculos por START predito.}
+Verde (0), amarelo (1), vermelho (2) e preto (3).
+O X branco marca divergência em relação ao gabarito oficial,
+consultado apenas na visualização.
+A base é a célula ciano preenchida. Células pretas são paredes e os demais tons
+distinguem custos de terreno. A origem absoluta está no canto superior esquerdo.
+
+\textbf{Fontes.} Enunciado Tarefa 3, v2 (28/10/2026), relatórios T1 e T2 e
+\href{https://github.com/tacla/VictSim3/tree/803a01e54bfa01cde797538d8f2b98d66f12afe2/data_vis_and_stats}{manual e visualizador VictSim3}.
+\end{document}

@@ -1,0 +1,4 @@
+01f76610ee51089dbf7a4f4515eb5cf305e94713586d423a4fc6c6cfdd2e0b5b  map.csv
+08738487eaf3571ef36f37cf6f6dd85dde1cdc1af13dd5798bbd2a91a39b68f5  modelos/t1/melhor_rn.joblib
+f34c11680fac655166fdc8b7afa193fdbb6253f779af9f3b23d340d523f6cc8a  modelos/t2/melhor_rn.joblib
+669effb33e644a4a1473a6cee89e643bceb1e38214ba971d96bd0e676d1a7948  modelos/t2/scaler.joblib
