@@ -1,0 +1,9 @@
+01f76610ee51089dbf7a4f4515eb5cf305e94713586d423a4fc6c6cfdd2e0b5b  ../t03-agrupamento-vitimas/map.csv
+ac48cbbbea1fafef2491a7e93957cb1558789bbb3fb2c3d7f3405644d45034db  ../t03-agrupamento-vitimas/outputs/map_predito.csv
+da581e7bb94a86982c65459ab30a57ace45ae8387244ea56d98a289aa6aa0309  ../t03-agrupamento-vitimas/outputs/predicoes.csv
+c3f1c556637fbe1d8bbf90b5b96531429d22ea725c1ab936e60a2968edb900cb  ../t03-agrupamento-vitimas/outputs/clusters/cluster_1.txt
+f6af1e20d041d453ec54c281bd0dc075ca91ceccfef4266cd67e027099799657  ../t03-agrupamento-vitimas/outputs/clusters/cluster_2.txt
+0fc909ae1437a5a2a529391d4609c50720ac0b2873c658ec4012a0ed0b47d77d  ../t03-agrupamento-vitimas/outputs/clusters/cluster_3.txt
+45a4a1a032eac2cd35799892b5051c3bb5e23a6a0a5dca27f71911f6ddc71a91  ../t03-agrupamento-vitimas/outputs/clusters/cluster_4.txt
+4d24806ec56dadff2278c795506c29177f1001d55b314380b1f2432fe1fb01bd  ../t03-agrupamento-vitimas/outputs/clusters/cluster_5.txt
+58086d53f1fee49c5fede5db55893d1b5aa63b54a5c3b86e888e8a315c0b16d1  ../t03-agrupamento-vitimas/outputs/clusters/cluster_6.txt
